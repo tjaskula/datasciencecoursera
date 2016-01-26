@@ -1,15 +1,10 @@
-# Reads two files from a given paths @trainPath and @testPath,
-# Merges them together and writes back a merged file into the @toPath
-mergeDfs <- function(trainPath, testPath, headers, toPath) {
+# Appends train and test data frames together,
+# Adds headers name to the data set.
+mergeDfs <- function(train, test, headers) {
   
-  dfTrain <- read.csv(trainPath, sep = "", header = FALSE, colClasses = "character")
-  dfTest <- read.csv(testPath, sep = "", header = FALSE, colClasses = "character")
-  
-  dfJoined <- rbind(dfTrain, dfTest)
+  dfJoined <- rbind(train, test)
   
   names(dfJoined) <- headers
-  
-  write.csv(dfJoined, toPath)
   
   dfJoined
 }
