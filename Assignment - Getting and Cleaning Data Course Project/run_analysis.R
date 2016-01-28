@@ -4,6 +4,7 @@ run_analysis <- function() {
   # references sub scripts for specific behavior.
   if(!exists("mergeDfs", mode="function")) source("mergedatasets.R")
   if(!exists("read_data", mode="function")) source("read_data.R")
+  if(!exists("extractMeanStd", mode="function")) source("extract.R")
   
   # call to merge between training set and test set.
   trainsetpath <- "./datasets/UCI HAR Dataset/train/X_train.txt"
@@ -18,6 +19,7 @@ run_analysis <- function() {
   testDf <- read_data(testsetpath)
   
   dfMerged <- mergeDfs(trainDf, testDf, headers)
+  dfMeanStd <- extractMeanStd(dfMerged)
   
-  dfMerged
+  dfMeanStd
 }
