@@ -1,3 +1,5 @@
+library(dplyr)
+
 # Main entry point to run the whole analysis.
 run_analysis <- function() {
   
@@ -8,8 +10,21 @@ run_analysis <- function() {
   
   # call to merge between training set and test set.
   trainsetpath <- "./datasets/UCI HAR Dataset/train/X_train.txt"
+  trainactivitypath <- "./datasets/UCI HAR Dataset/train/Y_train.txt"
   testsetpath <- "./datasets/UCI HAR Dataset/test/X_test.txt"
+  testactivitypath <- "./datasets/UCI HAR Dataset/test/Y_test.txt"
   headerspath <- "./datasets/UCI HAR Dataset/features.txt"
+  activitylabelspath <- "./datasets/UCI HAR Dataset/activity_labels.txt"
+  
+  # read activity labels
+  lbls <- read_data(activitylabelspath)
+  trainlbls <- read_data(trainactivitypath)
+  testlbls <- read_data(testactivitypath)
+  
+  trainsetlbls <- merge(trainlbls, lbls)
+  testsetlbls <- merge(testlbls, lbls)
+  
+  lbls_all <- mergeDfs(trainsetlbls, testsetlbls, c("id", "activity"))
   
   # read headers
   headersDf <- read_data(headerspath)
@@ -18,8 +33,9 @@ run_analysis <- function() {
   trainDf <- read_data(trainsetpath)
   testDf <- read_data(testsetpath)
   
-  dfMerged <- mergeDfs(trainDf, testDf, headers)
-  dfMeanStd <- extractMeanStd(dfMerged)
+  df_all <- mergeDfs(trainDf, testDf, headers) %>% 
+            extractMeanStd %>%
+            cbind(select(lbls_all, activity))
   
-  dfMeanStd
+  df_all
 }
