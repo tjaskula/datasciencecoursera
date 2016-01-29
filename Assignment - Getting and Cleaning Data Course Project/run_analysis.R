@@ -3,11 +3,6 @@ library(dplyr)
 # Main entry point to run the whole analysis.
 run_analysis <- function() {
   
-  # references sub scripts for specific behavior.
-  if(!exists("mergeDfs", mode="function")) source("mergedatasets.R")
-  if(!exists("read_data", mode="function")) source("read_data.R")
-  if(!exists("extractMeanStd", mode="function")) source("extract.R")
-  
   # call to merge between training set and test set.
   trainsetpath <- "./datasets/UCI HAR Dataset/train/X_train.txt"
   trainactivitypath <- "./datasets/UCI HAR Dataset/train/Y_train.txt"
@@ -38,4 +33,26 @@ run_analysis <- function() {
             cbind(select(lbls_all, activity))
   
   df_all
+}
+
+# Reads csv file from a given @fromPath
+read_data <- function(fromPath) {
+  df <- read.csv(fromPath, sep = "", header = FALSE, colClasses = "character")
+  df
+}
+
+# Extracts mean and standard deviation columns
+extractMeanStd <- function(df) {
+  df[,grep("(mean\\(\\)|std\\(\\))", names(df))]
+}
+
+# Appends train and test data frames together,
+# Adds headers name to the data set.
+mergeDfs <- function(train, test, headers) {
+  
+  dfJoined <- rbind(train, test)
+  
+  names(dfJoined) <- headers
+  
+  dfJoined
 }
