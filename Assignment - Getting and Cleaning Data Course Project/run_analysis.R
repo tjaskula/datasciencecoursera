@@ -1,54 +1,69 @@
+# This file uses Google's R naming convention
+# https://google.github.io/styleguide/Rguide.xml
 library(dplyr)
 
 # Main entry point to run the whole analysis.
-run_analysis <- function() {
+RunAnalysis <- function() {
   
-  # call to merge between training set and test set.
-  trainsetpath <- "./datasets/UCI HAR Dataset/train/X_train.txt"
-  trainactivitypath <- "./datasets/UCI HAR Dataset/train/Y_train.txt"
-  testsetpath <- "./datasets/UCI HAR Dataset/test/X_test.txt"
-  testactivitypath <- "./datasets/UCI HAR Dataset/test/Y_test.txt"
-  headerspath <- "./datasets/UCI HAR Dataset/features.txt"
-  activitylabelspath <- "./datasets/UCI HAR Dataset/activity_labels.txt"
+  # file path definitions
+  basePath <- "./datasets/UCI HAR Dataset"
+  trainsetPath <- file.path(basePath, "train/X_train.txt")
+  trainActivityPath <- file.path(basePath, "train/Y_train.txt")
+  trainSubjectPath <- file.path(basePath, "train/subject_train.txt")
+  testsetPath <- file.path(basePath, "test/X_test.txt")
+  testActivityPath <- file.path(basePath, "test/Y_test.txt")
+  testSubjectPath <- file.path(basePath, "test/subject_test.txt")
+  headersPath <- file.path(basePath, "features.txt")
+  activityLabelsPath <- file.path(basePath, "activity_labels.txt")
   
   # read activity labels
-  lbls <- read_data(activitylabelspath)
-  trainlbls <- read_data(trainactivitypath)
-  testlbls <- read_data(testactivitypath)
+  lbls <- ReadData(activityLabelsPath)
+  trainLbls <- ReadData(trainActivityPath)
+  testLbls <- ReadData(testActivityPath)
   
-  trainsetlbls <- merge(trainlbls, lbls)
-  testsetlbls <- merge(testlbls, lbls)
+  # merging ids of activities with its labels
+  trainsetLbls <- merge(trainLbls, lbls)
+  testsetLbls <- merge(testLbls, lbls)
   
-  lbls_all <- mergeDfs(trainsetlbls, testsetlbls, c("id", "activity"))
+  # append train and test together with column names
+  lblsAll <- MergeDfs(trainsetLbls, testsetLbls, c("id", "activity"))
   
-  # read headers
-  headersDf <- read_data(headerspath)
-  headers <- c(headersDf[,2])
+  # read subjects
+  trainSubjectIds <- ReadData(trainSubjectPath)
+  testSubjectIds <- ReadData(testSubjectPath)
   
-  trainDf <- read_data(trainsetpath)
-  testDf <- read_data(testsetpath)
+  # merge train and test subject into one file adding column name
+  subjectAll <- MergeDfs(trainSubjectIds, testSubjectIds, "subject")
   
-  df_all <- mergeDfs(trainDf, testDf, headers) %>% 
-            extractMeanStd %>%
-            cbind(select(lbls_all, activity))
+  # read feature headers
+  headersDf <- ReadData(headersPath)
+  headers <- c(headersDf[ ,2])
   
-  df_all
+  trainDf <- ReadData(trainsetPath)
+  testDf <- ReadData(testsetPath)
+  
+  dfAll <- MergeDfs(trainDf, testDf, headers) %>% 
+            ExtractMeanStd %>%
+            cbind(select(lblsAll, activity)) %>%
+            cbind(subjectAll)
+  
+  dfAll
 }
 
 # Reads csv file from a given @fromPath
-read_data <- function(fromPath) {
+ReadData <- function(fromPath) {
   df <- read.csv(fromPath, sep = "", header = FALSE, colClasses = "character")
   df
 }
 
 # Extracts mean and standard deviation columns
-extractMeanStd <- function(df) {
+ExtractMeanStd <- function(df) {
   df[,grep("(mean\\(\\)|std\\(\\))", names(df))]
 }
 
 # Appends train and test data frames together,
 # Adds headers name to the data set.
-mergeDfs <- function(train, test, headers) {
+MergeDfs <- function(train, test, headers) {
   
   dfJoined <- rbind(train, test)
   
