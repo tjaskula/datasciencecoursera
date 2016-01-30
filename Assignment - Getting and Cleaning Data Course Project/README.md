@@ -34,6 +34,16 @@ The script uses `dplyr` library
 library(dplyr)
 ```
 
+### Fast getting started
+
+All you need to do is to run the `run_analysis.R` script.
+
+```r
+source("run_analysis.R")
+RunAnalysis()
+```
+The scripts writes a `tidy.txt` which is the result of the cleaning of the initial Human Activity Recognition Using Smartphones Dataset. The output file containis 180 rows and 68 columns. The description of the data in the file can be found in the [CodeBook.md](https://github.com/tjaskula/datasciencecoursera/blob/master/Assignment%20-%20Getting%20and%20Cleaning%20Data%20Course%20Project/CodeBook.md) file.
+
 ### Analysis steps
 
 The `run_analysis.R` script performs the following analysis steps
@@ -54,4 +64,3 @@ testSubjectPath <- file.path(basePath, "test/subject_test.txt")
 headersPath <- file.path(basePath, "features.txt")
 activityLabelsPath <- file.path(basePath, "activity_labels.txt")
 ```
-  
