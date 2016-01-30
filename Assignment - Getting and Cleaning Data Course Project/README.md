@@ -74,7 +74,7 @@ ReadData <- function(fromPath) {
   df <- read.csv(fromPath, sep = "", header = FALSE, stringsAsFactors = FALSE)
   df
 }
-``
+```
 
 Read activity labels from train and test sets and transforming it :
 
