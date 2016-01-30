@@ -124,7 +124,9 @@ testDf <- ReadData(testsetPath)
 #### Step 1, 2 and 3
 
 Step 1: Merges the training and the test sets to create one data set.
+
 Step 2: Extracts only the measurements on the mean and standard deviation for each measurement.
+
 Step 3: Uses descriptive activity names to name the activities in the data set
 
 The 3 first steps of the taks are carried out with the following pipline of function using `dplyr` chain operator `%>%`:
