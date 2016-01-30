@@ -55,6 +55,11 @@ RunAnalysis <- function() {
   
   # step 5: grouping with subject and activity and applying mean to all the numeric columns
   tidyDf <- dfAll %>% group_by(subject, activity) %>% summarise_each(funs(mean))
+  
+  write.table(format(tidyDf, scientific=T), 
+              file = "tidy.txt", 
+              row.name=FALSE)
+  
   tidyDf
 }
 
