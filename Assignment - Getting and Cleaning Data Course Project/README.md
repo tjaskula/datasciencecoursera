@@ -26,4 +26,10 @@ In order to perfom the analysis of the "Human Activity Recognition Using Smartph
 1. Appropriately labels the data set with descriptive variable names.
 1. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-### 
+### Additional libraries
+
+The script uses `dplyr` library
+
+```r
+library(dplyr)
+```
