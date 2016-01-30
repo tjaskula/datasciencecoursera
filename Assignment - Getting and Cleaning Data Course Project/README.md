@@ -171,7 +171,7 @@ cbind(select(lblsAll, activity)) # step 3: adding activity columns
 
 Step 4: Appropriately labels the data set with descriptive variable names.
 
-It reanmes column that match the tidy definition (readable and clear meaning).
+It renames column that match the tidy definition (readable and clear meaning).
 
 ```r
 # step 4: renaming columns with tidy names
