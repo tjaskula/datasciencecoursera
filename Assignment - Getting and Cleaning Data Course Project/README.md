@@ -33,3 +33,25 @@ The script uses `dplyr` library
 ```r
 library(dplyr)
 ```
+
+### Analysis steps
+
+The `run_analysis.R` script performs the following analysis steps
+
+#### Initialization of paths
+
+First, all paths to files that have to be merged together must be initialized. This is the very first part of the script.
+
+```r
+# file path definitions
+basePath <- "./datasets/UCI HAR Dataset"
+trainsetPath <- file.path(basePath, "train/X_train.txt")
+trainActivityPath <- file.path(basePath, "train/Y_train.txt")
+trainSubjectPath <- file.path(basePath, "train/subject_train.txt")
+testsetPath <- file.path(basePath, "test/X_test.txt")
+testActivityPath <- file.path(basePath, "test/Y_test.txt")
+testSubjectPath <- file.path(basePath, "test/subject_test.txt")
+headersPath <- file.path(basePath, "features.txt")
+activityLabelsPath <- file.path(basePath, "activity_labels.txt")
+```
+  
