@@ -47,6 +47,8 @@ RunAnalysis <- function() {
             cbind(select(lblsAll, activity)) %>%
             cbind(subjectAll)
   
+  names(dfAll) <- RenameColumns(names(dfAll))
+  
   dfAll
 }
 
@@ -70,4 +72,16 @@ MergeDfs <- function(train, test, headers) {
   names(dfJoined) <- headers
   
   dfJoined
+}
+
+# Rename columns names
+RenameColumns <- function(name) {
+  newName <- gsub("^t", "time", name)
+  newName <- gsub("^f", "fequency", newName)
+  newName <- gsub("([A]|[B]|[G]|[J]|[M])", "\\.\\1", newName)
+  newName <- gsub("Acc", "Acceleration", newName)
+  newName <- gsub("Mag", "Magnitude", newName)
+  newName <- gsub("\\-", "\\.", newName)
+  newName <- gsub("\\(\\)", "", newName)
+  tolower(newName)
 }
