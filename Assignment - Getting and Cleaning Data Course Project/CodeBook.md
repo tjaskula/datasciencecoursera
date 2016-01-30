@@ -116,8 +116,8 @@ Below is the transformed dataset:
 
 | Feature                                              | Values                     |
 |------------------------------------------------------|----------------------------|
-|subject                                               |							|
-|activity                                          	   |							|
+|subject                                               | numeric: 1 to 30			|
+|activity                                          	   | factor: WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING							|
 |time.body.accelerometer.mean.x                        |							|
 |time.body.accelerometer.mean.y                        |							|
 |time.body.accelerometer.mean.z                        |							|
