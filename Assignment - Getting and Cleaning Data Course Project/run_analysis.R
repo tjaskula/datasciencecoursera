@@ -25,30 +25,35 @@ RunAnalysis <- function() {
   trainLbls$V1 <- lbls[trainLbls$V1, 2]
   testLbls$V1 <- lbls[testLbls$V1, 2]
   
-  # append train and test together with column names
+  # append train and test activity labels
   lblsAll <- MergeDfs(trainLbls, testLbls, "activity")
+  lblsAll[, "activity"] <- as.factor(lblsAll[, "activity"])
   
   # read subjects
   trainSubjectIds <- ReadData(trainSubjectPath)
   testSubjectIds <- ReadData(testSubjectPath)
   
-  # merge train and test subject into one file adding column name
+  # merge train and test subject into one data frame adding column name
   subjectAll <- MergeDfs(trainSubjectIds, testSubjectIds, "subject")
   
-  # read feature headers
+  # read feature labels
   headersDf <- ReadData(headersPath)
-  headers <- c(headersDf[, 2])
+  headers <- c(headersDf[, 2]) # we are only interested in names
   
+  # reading train and test files
   trainDf <- ReadData(trainsetPath)
   testDf <- ReadData(testsetPath)
   
-  dfAll <- MergeDfs(trainDf, testDf, headers) %>% 
-            ExtractMeanStd %>%
-            cbind(subjectAll) %>%
-            cbind(select(lblsAll, activity))
+  # merging train and test adding fearture labels as headers
+  dfAll <- MergeDfs(trainDf, testDf, headers) %>% # step 1
+            ExtractMeanStd %>% # step 2: extract only mean() and std() columns
+            cbind(subjectAll) %>% # adding subject column
+            cbind(select(lblsAll, activity)) # step 3: adding activity column
   
+  # step 4: renaming columns with tidy names
   names(dfAll) <- RenameColumns(names(dfAll))
   
+  # step 5: grouping with subject and activity and applying mean to all the numeric columns
   tidyDf <- dfAll %>% group_by(subject, activity) %>% summarise_each(funs(mean))
   tidyDf
 }
@@ -67,11 +72,8 @@ ExtractMeanStd <- function(df) {
 # Appends train and test data frames together,
 # Adds headers name to the data set.
 MergeDfs <- function(train, test, headers) {
-  
   dfJoined <- rbind(train, test)
-  
   names(dfJoined) <- headers
-  
   dfJoined
 }
 
