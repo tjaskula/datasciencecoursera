@@ -22,11 +22,11 @@ RunAnalysis <- function() {
   testLbls <- ReadData(testActivityPath)
   
   # merging ids of activities with its labels
-  trainsetLbls <- merge(trainLbls, lbls)
-  testsetLbls <- merge(testLbls, lbls)
+  trainLbls$V1 <- lbls[trainLbls$V1, 2]
+  testLbls$V1 <- lbls[testLbls$V1, 2]
   
   # append train and test together with column names
-  lblsAll <- MergeDfs(trainsetLbls, testsetLbls, c("id", "activity"))
+  lblsAll <- MergeDfs(trainLbls, testLbls, "activity")
   
   # read subjects
   trainSubjectIds <- ReadData(trainSubjectPath)
@@ -37,24 +37,25 @@ RunAnalysis <- function() {
   
   # read feature headers
   headersDf <- ReadData(headersPath)
-  headers <- c(headersDf[ ,2])
+  headers <- c(headersDf[, 2])
   
   trainDf <- ReadData(trainsetPath)
   testDf <- ReadData(testsetPath)
   
   dfAll <- MergeDfs(trainDf, testDf, headers) %>% 
             ExtractMeanStd %>%
-            cbind(select(lblsAll, activity)) %>%
-            cbind(subjectAll)
+            cbind(subjectAll) %>%
+            cbind(select(lblsAll, activity))
   
   names(dfAll) <- RenameColumns(names(dfAll))
   
-  dfAll
+  tidyDf <- dfAll %>% group_by(subject, activity) %>% summarise_each(funs(mean))
+  tidyDf
 }
 
 # Reads csv file from a given @fromPath
 ReadData <- function(fromPath) {
-  df <- read.csv(fromPath, sep = "", header = FALSE, colClasses = "character")
+  df <- read.csv(fromPath, sep = "", header = FALSE, stringsAsFactors = FALSE)
   df
 }
 
@@ -79,7 +80,8 @@ RenameColumns <- function(name) {
   newName <- gsub("^t", "time", name)
   newName <- gsub("^f", "fequency", newName)
   newName <- gsub("([A]|[B]|[G]|[J]|[M])", "\\.\\1", newName)
-  newName <- gsub("Acc", "Acceleration", newName)
+  newName <- gsub("Acc", "Accelerometer", newName)
+  newName <- gsub("Gyro", "Gyroscope", newName)
   newName <- gsub("Mag", "Magnitude", newName)
   newName <- gsub("\\-", "\\.", newName)
   newName <- gsub("\\(\\)", "", newName)
