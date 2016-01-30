@@ -59,8 +59,128 @@ angle(): Angle between to vectors.
 
 Additional vectors obtained by averaging the signals in a signal window sample. These are used on the angle() variable:
 
-gravityMean
-tBodyAccMean
-tBodyAccJerkMean
-tBodyGyroMean
-tBodyGyroJerkMean
+gravityMean  
+tBodyAccMean  
+tBodyAccJerkMean  
+tBodyGyroMean  
+tBodyGyroJerkMean  
+
+## Transformations
+
+The following transformations has been applied to the original dataset:
+
+### Merge of train and test set
+
+The train and test set has been merged together. In the original version they were splitted into two files.
+
+### Extraction of mean and standard deviation features
+
+Only features for mean and standard deviations measures were kept. That means that from the original 561 feature vector we reduce it to 66 features.
+
+### Add feauture about subject and activity
+
+The subject and activity features has been added to the data set. The subject is an integer ranging from 1 to 30 and the activity is the factor vector describing 6 activities:
+
+WALKING   
+WALKING_UPSTAIRS  
+WALKING_DOWNSTAIRS  
+SITTING  
+STANDING  
+LAYING  
+
+### Renaming columns
+
+The columns has been renamed into readable and clean names. The following pattern has been used:
+
+* Original name: `tBodyGyroJerk-mean()-X`
+* Renamed: `time.body.gyroscope.jerk.mean.x`
+
+The new names are in lower case and each word is separated by the `.`.
+
+Different words were renamed to something more explicit:
+
+* t to time
+* f to frequency
+* Acc to accelerometer
+* Gyro to gyroscope
+* Mag to magnitude
+* `-` and `()` were deleted 
+
+### Aggregating data
+
+All the values are means, aggregated over 30 subjects and 6 activities, hence the resulting dataset is 180 rows by 68 columns.
+
+## Resulting Tidy dataset
+
+Below is the transformed dataset:
+
+| Feature                                              | Values                     |
+|------------------------------------------------------|----------------------------|
+|subject                                               |							|
+|activity                                          	   |							|
+|time.body.accelerometer.mean.x                        |							|
+|time.body.accelerometer.mean.y                        |							|
+|time.body.accelerometer.mean.z                        |							|
+|time.body.accelerometer.std.x                         |							|
+|time.body.accelerometer.std.y                         |							|
+|time.body.accelerometer.std.z                         |							|
+|time.gravity.accelerometer.mean.x                     |							|
+|time.gravity.accelerometer.mean.y                     |							|
+|time.gravity.accelerometer.mean.z                     |							|
+|time.gravity.accelerometer.std.x                      |							|
+|time.gravity.accelerometer.std.y                      |							|
+|time.gravity.accelerometer.std.z                      |							|
+|time.body.accelerometer.jerk.mean.x                   |							|
+|time.body.accelerometer.jerk.mean.y                   |							|
+|time.body.accelerometer.jerk.mean.z                   |							|
+|time.body.accelerometer.jerk.std.x                    |							|
+|time.body.accelerometer.jerk.std.y                    |							|
+|time.body.accelerometer.jerk.std.z                    |							|
+|time.body.gyroscope.mean.x                            |							|
+|time.body.gyroscope.mean.y                            |							|
+|time.body.gyroscope.mean.z                            |							|
+|time.body.gyroscope.std.x                             |							|
+|time.body.gyroscope.std.y                             |							|
+|time.body.gyroscope.std.z                             |							|
+|time.body.gyroscope.jerk.mean.x                       |							|
+|time.body.gyroscope.jerk.mean.y                       |							|
+|time.body.gyroscope.jerk.mean.z                       |							|
+|time.body.gyroscope.jerk.std.x                        |							|
+|time.body.gyroscope.jerk.std.y                        |							|
+|time.body.gyroscope.jerk.std.z                        |							|
+|time.body.accelerometer.magnitude.mean                |							|
+|time.body.accelerometer.magnitude.std                 |							|
+|time.gravity.accelerometer.magnitude.mean             |							|
+|time.gravity.accelerometer.magnitude.std              |							|
+|time.body.accelerometer.jerk.magnitude.mean           |							|
+|time.body.accelerometer.jerk.magnitude.std            |							|
+|time.body.gyroscope.magnitude.mean                    |							|
+|time.body.gyroscope.magnitude.std                     |							|
+|time.body.gyroscope.jerk.magnitude.mean               |							|
+|time.body.gyroscope.jerk.magnitude.std                |							|
+|fequency.body.accelerometer.mean.x                    |							|
+|fequency.body.accelerometer.mean.y                    |							|
+|fequency.body.accelerometer.mean.z                    |							|
+|fequency.body.accelerometer.std.x                     |							|
+|fequency.body.accelerometer.std.y                     |							|
+|fequency.body.accelerometer.std.z                     |							|
+|fequency.body.accelerometer.jerk.mean.x               |							|
+|fequency.body.accelerometer.jerk.mean.y               |							|
+|fequency.body.accelerometer.jerk.mean.z               |							|
+|fequency.body.accelerometer.jerk.std.x                |							|
+|fequency.body.accelerometer.jerk.std.y                |							|
+|fequency.body.accelerometer.jerk.std.z                |							|
+|fequency.body.gyroscope.mean.x                        |							|
+|fequency.body.gyroscope.mean.y                        |							|
+|fequency.body.gyroscope.mean.z                        |							|
+|fequency.body.gyroscope.std.x                         |							|
+|fequency.body.gyroscope.std.y                         |							|
+|fequency.body.gyroscope.std.z                         |							|
+|fequency.body.accelerometer.magnitude.mean            |							|
+|fequency.body.accelerometer.magnitude.std             |							|
+|fequency.body.body.accelerometer.jerk.magnitude.mean  |							|
+|fequency.body.body.accelerometer.jerk.magnitude.std   |							|
+|fequency.body.body.gyroscope.magnitude.mean           |							|
+|fequency.body.body.gyroscope.magnitude.std            |							|
+|fequency.body.body.gyroscope.jerk.magnitude.mean      |							|
+|fequency.body.body.gyroscope.jerk.magnitude.std       |                            |
